@@ -83,13 +83,55 @@ namespace NFLDataScrapper.Console
                 var gameStatsNode = playerProfileHtmlDoc.DocumentNode.SelectSingleNode("//div[@class='stats_pullout']");
                 if (gameStatsNode != null)
                 {
+                    var gStatsChildDiv = gameStatsNode.ChildNodes
+                        .Where(t => t.Name.Equals("div", StringComparison.CurrentCultureIgnoreCase)).ToList();
+                    var commonDiv = gStatsChildDiv[1].ChildNodes
+                        .Where(t => t.Name.Equals("div", StringComparison.CurrentCultureIgnoreCase)).ToList();
+                    var gamesPlayedDiv = commonDiv[0];
+                    if (gamesPlayedDiv.ChildNodes.Count > 4)
+                    {
+                        var lastYearGamesPlayed = gamesPlayedDiv.ChildNodes[2].InnerHtml;
+                        int lygp;
+                        if (int.TryParse(lastYearGamesPlayed, out lygp))
+                        {
+                            player.GamePlayedLastYear = lygp;
+                        }
 
+                        int cgp;
+                        var careerGamesPlayed = gamesPlayedDiv.ChildNodes[4].InnerHtml;
+                        if (int.TryParse(careerGamesPlayed, out cgp))
+                        {
+                            player.GamesPlayedCareer = cgp;
+                        }
+
+                        
+                    }
+                    else
+                    {
+                        int cgp;
+                        var careerGamesPlayed = gamesPlayedDiv.ChildNodes[3].InnerHtml;
+                        if (int.TryParse(careerGamesPlayed, out cgp))
+                        {
+                            player.GamesPlayedCareer = cgp;
+                        }
+
+                    }
+
+                    
+                    
+                    var appxValueDiv = commonDiv[1];
+                    if (gStatsChildDiv.Count > 2)
+                    {
+                        var positionRelated = gStatsChildDiv[2].ChildNodes
+                            .Where(t => t.Name.Equals("div", StringComparison.CurrentCultureIgnoreCase)).ToList();
+                    }
                 }
 
                 return player;
             }
             catch (Exception e)
             {
+                System.Console.WriteLine(url);
                 System.Console.WriteLine(e);
                 throw;
             }

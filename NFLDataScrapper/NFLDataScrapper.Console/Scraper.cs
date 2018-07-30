@@ -30,7 +30,7 @@ namespace NFLDataScrapper.Console
         {
             var players = new List<Player>();
             var playerSraper = new PlayerScraper();
-            
+            //var u = playerSraper.GetPlayerProfile("https://www.pro-football-reference.com/players/A/AdamKe01.htm");
             foreach (var letter in _lettersToScrpe)
             {
                 // Ln 64

@@ -13,5 +13,7 @@ namespace NFLDataScrapper.Console
         public string Weight { get; set; }
         public string DateOfBirth { get; set; }
 
+        public int? GamePlayedLastYear { get; set; }
+        public int GamesPlayedCareer { get; set; }
     }
 }
